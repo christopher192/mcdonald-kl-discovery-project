@@ -274,7 +274,6 @@ const authProtectedRoutes = [
   { path: "/apps-file-manager", component: <FileManager /> },
   { path: "/apps-todo", component: <ToDoList /> },
 
-
   //Chat
   { path: "/apps-chat", component: <Chat /> },
 
@@ -352,7 +351,6 @@ const authProtectedRoutes = [
 
   { path: "/charts-chartjs", component: <ChartsJs /> },
   { path: "/charts-echarts", component: <Echarts /> },
-
 
   // Base Ui
   { path: "/ui-alerts", component: <UiAlerts /> },

@@ -31,13 +31,13 @@ Follow these steps to run the project.
 
 <ins>Step 1: Setup Environment</ins>
 <br>
-Set up your Conda environment and install the necessary libraries, execute the following command in your command prompt:
-<br>
-`conda create --name yourenv python=3.10`
-<br>
-`conda activate yourenv`
-<br>
-`pip install -r requirements.txt`
+Set up your Conda environment and install the necessary libraries, execute the following command in your command prompt.
+
+```
+conda create --name yourenv python=3.10
+conda activate yourenv
+pip install -r requirements.txt
+```
 
 <ins>Step 2: Database Creation</ins>
 <br>
@@ -51,7 +51,7 @@ For the web scraping process and data population, please refer to `scraping.ipyn
 <br>
 For RAG, vector database storage and LLM integration, please refer to `rag.ipynb`.
 
-Run the following command to start Qdrant using Docker
+Run the following command to start Qdrant using Docker.
 
 ```
 docker pull qdrant/qdrant
@@ -70,7 +70,7 @@ To execute the API, refer to the `backend/api.py` file. Once running, the data c
 
 This project will be using the non_rag_query endpoint.
 
-Run the following command to start Flask API, replace `yourenv`.
+To start the Flask API, run the following commands, replacing `yourenv` with your environment name.
 
 ```
 conda activate yourenv

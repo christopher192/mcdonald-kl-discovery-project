@@ -6,7 +6,7 @@ import { Dropdown, DropdownMenu, DropdownToggle, Form } from 'reactstrap';
 import logoSm from "../assets/images/logo-sm.png";
 import logoDark from "../assets/images/logo-dark.png";
 import logoLight from "../assets/images/logo-light.png";
-import subway from "../assets/images/subway.png";
+import mcdonald from "../assets/images/McDonalds-Logo.png";
 
 //import Components
 import SearchOption from '../Components/Common/SearchOption';
@@ -83,19 +83,19 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                             <div className="navbar-brand-box horizontal-logo">
                                 <Link to="/" className="logo logo-dark">
                                     <span className="logo-sm">
-                                        <img src={subway} alt="" height="22" />
+                                        <img src={mcdonald} alt="" height="22" />
                                     </span>
                                     <span className="logo-lg">
-                                        <img src={subway} alt="" height="45" />
+                                        <img src={mcdonald} alt="" height="45" />
                                     </span>
                                 </Link>
 
                                 <Link to="/" className="logo logo-light">
                                     <span className="logo-sm">
-                                        <img src={subway} alt="" height="22" />
+                                        <img src={mcdonald} alt="" height="22" />
                                     </span>
                                     <span className="logo-lg">
-                                        <img src={subway} alt="" height="45" />
+                                        <img src={mcdonald} alt="" height="45" />
                                     </span>
                                 </Link>
                             </div>
