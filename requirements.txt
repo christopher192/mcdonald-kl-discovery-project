@@ -1,0 +1,8 @@
+requests
+beautifulsoup4
+selenium
+qdrant-client
+openai
+flask
+flask_cors
+psycopg2
