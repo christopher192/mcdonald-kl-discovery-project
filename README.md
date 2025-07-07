@@ -71,7 +71,7 @@ This query selects each McDonald's outlet and checks if there is any other outle
 ```
 
 Using `geopy’s geodesic (Vincenty)`
-Here is the code to check if two points are within 5 km. It calculates the geodesic distance between two coordinates using the Vincenty formula with the WGS-84 ellipsoid. This method is more accurate than Haversine and confirms whether the points are within a 5 km radius.
+Here is the code to check if two outlets' 5 km radius catchments intersect. It calculates the geodesic distance between two geographic coordinates using the WGS-84 ellipsoid model, which is more accurate than the Haversine formula (which assumes Earth is a perfect sphere).
 
 ```
 from geopy.distance import geodesic
