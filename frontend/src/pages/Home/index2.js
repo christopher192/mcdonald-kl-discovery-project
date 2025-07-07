@@ -5,7 +5,7 @@ import BreadCrumb from '../../Components/Common/BreadCrumb';
 
 const LoadingContainer = () => <div>Loading...</div>
 
-const Home = (props) => {
+const Home2 = (props) => {
     document.title = "Google Maps";
 
     const [currentLocation, setCurrentLocation] = useState({ lat: 3.1390, lng: 101.6869 });
@@ -26,7 +26,7 @@ const Home = (props) => {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5000/get_outlets')
+        fetch('http://127.0.0.1:5000/get_outlets_geodesic')
             .then(response => response.json())
             .then(data => {
                 setOutlets(data["data"]);
@@ -103,5 +103,5 @@ export default (
         apiKey: "AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE",
         LoadingContainer: LoadingContainer,
         v: "3",
-    })(Home)
+    })(Home2)
 );

@@ -7,6 +7,7 @@ import logging
 from dotenv import load_dotenv
 from openai import OpenAI
 from qdrant_client import QdrantClient
+from geopy.distance import geodesic
 
 load_dotenv()
 
@@ -52,7 +53,7 @@ def get_outlets():
                                 SELECT 1 
                                 FROM mcdonald b
                                 WHERE a.id != b.id
-                                AND ST_DWithin(a.geom, b.geom, 5000)
+                                AND ST_DWithin(a.geom, b.geom, 10000)
                             )
                             THEN 1
                             ELSE 0
@@ -65,6 +66,43 @@ def get_outlets():
     except Exception as e:
         app.logger.error('Error retrieving outlets: %s', e)
         return jsonify(status='error', message=str(e)), 500
+    finally:
+        conn.close()
+
+@app.route('/get_outlets_geodesic', methods=['GET'])
+def get_outlets_geodesic():
+    conn = get_db_connection()
+    if conn is None:
+        return jsonify(status='error', message='Database connection failed.'), 500
+    try:
+        with conn:
+            with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                cursor.execute('''
+                    SELECT 
+                        id, name, address, latitude, longitude
+                    FROM mcdonald;
+                ''')
+                outlets = cursor.fetchall()
+                outlet_list = [dict(outlet) for outlet in outlets]
+
+        for outlet in outlet_list:
+            outlet_coord = (outlet['latitude'], outlet['longitude'])
+            intersects = 0
+            for other in outlet_list:
+                if outlet['id'] != other['id']:
+                    other_coord = (other['latitude'], other['longitude'])
+                    distance_km = geodesic(outlet_coord, other_coord).kilometers
+                    if distance_km <= 10: # 5km + 5km
+                        intersects = 1
+                        break
+            outlet['intersects_5km'] = intersects
+
+        return jsonify(data=outlet_list, status='success')
+
+    except Exception as e:
+        app.logger.error('Error retrieving outlets: %s', e)
+        return jsonify(status='error', message=str(e)), 500
+
     finally:
         conn.close()
 

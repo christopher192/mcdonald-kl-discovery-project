@@ -155,8 +155,14 @@ const Navdata = () => {
       subItems: [
         {
           id: "mcdonaldMap",
-          label: "McDonald's Map",
+          label: "McDonald's Map (PostGIS)",
           link: "/home",
+          parentId: "dashboard",
+        },
+        {
+          id: "mcdonaldMap",
+          label: "McDonald's Map (Geodesic)",
+          link: "/home2",
           parentId: "dashboard",
         },
         {

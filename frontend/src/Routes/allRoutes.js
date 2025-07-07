@@ -246,7 +246,8 @@ import UiLink from "../pages/BaseUi/UiLinks/UiLinks";
 // import RangeArea from "../pages/Charts/ApexCharts/RangeAreaCharts";
 // import FunnelCharts from "../pages/Charts/ApexCharts/FunnelCharts";
 
-import Home from "../pages/Home";
+import Home from "../pages/Home/index";
+import Home2 from "../pages/Home/index2";
 
 const authProtectedRoutes = [
   { path: "/dashboard-analytics", component: <DashboardAnalytics /> },
@@ -455,7 +456,7 @@ const authProtectedRoutes = [
 
   //Home
   { path: "/home", component: <Home /> },
-
+  { path: "/home2", component: <Home2 /> },
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   {

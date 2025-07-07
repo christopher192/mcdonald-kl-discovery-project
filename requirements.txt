@@ -6,3 +6,4 @@ openai
 flask
 flask_cors
 psycopg2
+geopy
