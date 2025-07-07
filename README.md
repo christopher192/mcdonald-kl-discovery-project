@@ -85,5 +85,8 @@ To launch the user interface, navigate to the `frontend/react` directory. Use `y
 Here is a look at the user interface for the map visualization of outlets.
 ![alt text](images/ui-web.png)
 
-Below is the full visual representation of the geolocation of MCDonald`s outlets, including their radius and intersections.
+Below is a complete visual representation of McDonald's outlets generated using PostGIS, showing their locations, 5 km radius coverage, and any intersections within that distance.
 ![alt text](images/map-visualization.png)
+
+Here is the UI for interacting with the McDonald's chatbot, where can ask questions and receive answers.
+![alt text](images/chat.png)
