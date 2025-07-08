@@ -10,7 +10,7 @@ Technologies Used:
 
 - Database: PostgreSQL with PostGIS
 - Web Scraping: Selenium, BeautifulSoup4
-- Backend Development: Flask
+- Backend Development: Flask, FastAPI
 - Frontend Development: React.js (Velzon template)
 - LLM: OpenAI
 - RAG Vector Database: Qdrant (running with Docker)
