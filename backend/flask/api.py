@@ -1,28 +1,18 @@
 import os
-import logging
-from typing import List, Dict, Optional
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from dotenv import load_dotenv
+from flask import Flask
+from flask_cors import CORS
 import psycopg2
 import psycopg2.extras
+import logging
+from dotenv import load_dotenv
 from openai import OpenAI
 from qdrant_client import QdrantClient
 from geopy.distance import geodesic
 
 load_dotenv()
 
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+app = Flask(__name__)
+CORS(app)
 logging.basicConfig(level=logging.INFO)
 
 client_openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -40,27 +30,17 @@ def get_db_connection():
         )
         return conn
     except psycopg2.Error as e:
-        logging.error(f'Database connection error: {e}')
+        app.logger.error('Database connection error: %s', e)
         return None
 
-class QueryRequest(BaseModel):
-    query: Optional[str] = None
-
-class MessagesRequest(BaseModel):
-    messages: List[Dict[str, str]]
-
-@app.get("/")
-def read_root():
-    return {"message": "FastAPI is running"}
-
-@app.get("/get_outlets")
+@app.route('/get_outlets', methods=['GET'])
 def get_outlets():
     conn = get_db_connection()
     if conn is None:
-        raise HTTPException(status_code=500, detail="Database connection failed.")
+        return jsonify(status='error', message='Database connection failed.'), 500
     try:
         with conn:
-            with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+           with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
                 cursor.execute('''
                     SELECT 
                         a.id,
@@ -82,23 +62,24 @@ def get_outlets():
                 ''')
                 outlets = cursor.fetchall()
                 outlet_list = [dict(outlet) for outlet in outlets]
-        return {"data": outlet_list, "status": "success"}
+        return jsonify(data=outlet_list, status='success')
     except Exception as e:
-        logging.error(f'Error retrieving outlets: {e}')
-        raise HTTPException(status_code=500, detail=str(e))
+        app.logger.error('Error retrieving outlets: %s', e)
+        return jsonify(status='error', message=str(e)), 500
     finally:
         conn.close()
 
-@app.get("/get_outlets_geodesic")
+@app.route('/get_outlets_geodesic', methods=['GET'])
 def get_outlets_geodesic():
     conn = get_db_connection()
     if conn is None:
-        raise HTTPException(status_code=500, detail="Database connection failed.")
+        return jsonify(status='error', message='Database connection failed.'), 500
     try:
         with conn:
             with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
                 cursor.execute('''
-                    SELECT id, name, address, latitude, longitude
+                    SELECT 
+                        id, name, address, latitude, longitude
                     FROM mcdonald;
                 ''')
                 outlets = cursor.fetchall()
@@ -111,23 +92,26 @@ def get_outlets_geodesic():
                 if outlet['id'] != other['id']:
                     other_coord = (other['latitude'], other['longitude'])
                     distance_km = geodesic(outlet_coord, other_coord).kilometers
-                    if distance_km <= 10:  # 5km + 5km
+                    if distance_km <= 10: # 5km + 5km
                         intersects = 1
                         break
             outlet['intersects_5km'] = intersects
 
-        return {"data": outlet_list, "status": "success"}
+        return jsonify(data=outlet_list, status='success')
+
     except Exception as e:
-        logging.error(f'Error retrieving outlets: {e}')
-        raise HTTPException(status_code=500, detail=str(e))
+        app.logger.error('Error retrieving outlets: %s', e)
+        return jsonify(status='error', message=str(e)), 500
+
     finally:
         conn.close()
 
-@app.post("/rag_query")
-def handle_rag_query(request: QueryRequest):
-    user_query = request.query
+@app.route("/rag_query", methods=["POST"])
+def handle_rag_query():
+    data = request.get_json()
+    user_query = data.get("query")
     if not user_query:
-        raise HTTPException(status_code=400, detail="Missing 'query' in request body")
+        return jsonify({"error": "Missing 'query' in request body"}), 400
 
     try:
         response = client_openai.embeddings.create(
@@ -163,21 +147,21 @@ def handle_rag_query(request: QueryRequest):
 
         answer = response.choices[0].message.content
 
-        return {"answer": answer}
-
+        return jsonify({"answer": answer})
     except Exception as e:
-        logging.error(f'Error in rag_query: {e}')
-        raise HTTPException(status_code=500, detail=str(e))
+        app.logger.error('Error in rag_query: %s', e)
+        return jsonify(status='error', message=str(e)), 500
 
-@app.post("/non_rag_query")
-def non_rag_query(request: MessagesRequest):
-    messages = request.messages
+@app.route("/non_rag_query", methods=["POST"])
+def non_rag_query():
+    data = request.get_json()
+    messages = data.get("messages")
     if not messages:
-        raise HTTPException(status_code=400, detail="Missing 'messages' in request body")
+        return jsonify({"error": "Missing 'messages' in request body"}), 400
 
     conn = get_db_connection()
     if conn is None:
-        raise HTTPException(status_code=500, detail="Database connection failed.")
+        return jsonify(status='error', message='Database connection failed.'), 500
 
     try:
         with conn:
@@ -213,11 +197,14 @@ Use the above outlets data to answer user questions clearly and concisely. Do no
         )
         answer = response.choices[0].message.content
 
-        return {"answer": answer}
-
+        return jsonify({"answer": answer})
+    
     except Exception as e:
-        logging.error(f'Error in non_rag_query: {e}')
-        raise HTTPException(status_code=500, detail=str(e))
+        app.logger.error('Error in non_rag_query: %s', e)
+        return jsonify(status='error', message=str(e)), 500
 
     finally:
         conn.close()
+
+if __name__ == '__main__':
+    app.run(debug=True)

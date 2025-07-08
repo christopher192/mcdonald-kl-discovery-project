@@ -159,7 +159,11 @@ To start the Flask API, run the following commands, replacing `yourenv` with you
 
 ```
 conda activate yourenv
-python backend/api.py
+python backend/flask/api.py
+```
+
+```
+uvicorn backend.api:app --reload --host 127.0.0.1 --port 8000
 ```
 
 <ins>Step 6: Frontend Implementation</ins>
