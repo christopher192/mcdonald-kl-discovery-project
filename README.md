@@ -6,7 +6,7 @@ This project is an extended version of the Subway Discovery Project, it aims to 
 - Which outlet allows birthday parties?
 
 ## <ins>Implementation/ Technology</ins>
-Technologies Used:
+Technologies Used
 
 - Database: PostgreSQL with PostGIS
 - Web Scraping: Selenium, BeautifulSoup4
@@ -166,7 +166,7 @@ RAG: Retrieves relevant outlet data first using a vector database (Qdrant), then
 
 Non-RAG: Sends all outlet data directly to the AI and asks it to answer without any retrieval step.This project will be using the non_rag_query endpoint.
 
-#### FastAPI (recommended):
+#### FastAPI (recommended)
 ```
 uvicorn backend.api:app --reload --host 127.0.0.1 --port 8000
 ```
