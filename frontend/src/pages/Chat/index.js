@@ -51,7 +51,7 @@ const Chat = () => {
 
     console.log(messagesForAPI);
 
-    fetch("http://localhost:5000/non_rag_query", {
+    fetch("http://localhost:8000/non_rag_query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -26,7 +26,7 @@ const Home2 = (props) => {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5000/get_outlets_geodesic')
+        fetch('http://localhost:8000/get_outlets_geodesic')
             .then(response => response.json())
             .then(data => {
                 setOutlets(data["data"]);
