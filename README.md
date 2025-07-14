@@ -219,3 +219,5 @@ Other visualization based on Geodesic.
 
 Here is the UI for interacting with the McDonald's chatbot, where can ask questions and receive answers.
 ![alt text](images/chat.png)
+
+### AWS Lightsail Deployment
