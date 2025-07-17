@@ -220,4 +220,27 @@ Other visualization based on Geodesic.
 Here is the UI for interacting with the McDonald's chatbot, where can ask questions and receive answers.
 ![alt text](images/chat.png)
 
-### AWS Lightsail Deployment
+### AWS EC2 Deployment
+1. Clone the repository
+
+2. Build and start all service
+```
+docker-compose up --build
+```
+For detached (background) mode
+```
+docker-compose up -d --build
+```
+3. Access the application
+```
+```
+
+4. Stop all running container
+```
+docker-compose down
+```
+
+5. View real-time log
+```
+docker-compose logs -f
+```

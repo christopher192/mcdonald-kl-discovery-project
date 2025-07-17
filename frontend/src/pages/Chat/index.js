@@ -18,6 +18,7 @@ const Chat = () => {
   ]);
 
   const messagesEndRef = useRef(null);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -51,7 +52,7 @@ const Chat = () => {
 
     console.log(messagesForAPI);
 
-    fetch("http://localhost:8000/non_rag_query", {
+    fetch(`${API_BASE_URL}/non_rag_query`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

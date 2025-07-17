@@ -12,6 +12,8 @@ const Home = (props) => {
     const [outlets, setOutlets] = useState(null);
     const [selectedOutlet, setSelectedOutlet] = useState(null);
 
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     const mapStyles = {
         width: '100%',
         height: '100%',
@@ -26,7 +28,7 @@ const Home = (props) => {
     }
 
     useEffect(() => {
-        fetch('http://localhost:8000/get_outlets')
+        fetch(`${API_BASE_URL}/get_outlets`)
             .then(response => response.json())
             .then(data => {
                 setOutlets(data["data"]);
@@ -100,7 +102,7 @@ const Home = (props) => {
 
 export default (
     GoogleApiWrapper({
-        apiKey: "AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE",
+        apiKey: 'AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE',
         LoadingContainer: LoadingContainer,
         v: "3",
     })(Home)

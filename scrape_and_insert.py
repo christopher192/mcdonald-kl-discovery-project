@@ -9,12 +9,15 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from dotenv import load_dotenv
 
-PGHOST = os.getenv("PGHOST", "db")
-PGPORT = os.getenv("PGPORT", "5432")
-PGUSER = os.getenv("PGUSER", "postgres")
-PGPASSWORD = os.getenv("PGPASSWORD", "admin")
-PGDATABASE = os.getenv("PGDATABASE", "postgis")
+load_dotenv()
+
+PGHOST = os.getenv("POSTGRES_DOCKER_HOST")
+PGPORT = os.getenv("POSTGRES_DOCKER_PORT")
+PGUSER = os.getenv("POSTGRES_USER")
+PGPASSWORD = os.getenv("POSTGRES_PASSWORD")
+PGDATABASE = os.getenv("POSTGRES_DB")
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")

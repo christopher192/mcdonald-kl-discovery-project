@@ -16,7 +16,7 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 
 client_openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-client_qdrant = QdrantClient("http://localhost:6333")
+client_qdrant = QdrantClient(url=os.getenv("QDRANT_DOCKER_URL"))
 collection_name = "mcd_outlet"
 
 def get_db_connection():

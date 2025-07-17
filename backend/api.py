@@ -26,17 +26,17 @@ app.add_middleware(
 logging.basicConfig(level=logging.INFO)
 
 client_openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-client_qdrant = QdrantClient(os.getenv("QDRANT_URL", "http://localhost:6333"))
+client_qdrant = QdrantClient(os.getenv("QDRANT_URL"))
 collection_name = "mcd_outlet"
 
 def get_db_connection():
     try:
         conn = psycopg2.connect(
-            dbname=os.getenv("POSTGRES_DB", "postgis"),
-            user=os.getenv("POSTGRES_USER", "postgres"),
-            password=os.getenv("POSTGRES_PASSWORD", "admin"),
-            host=os.getenv("POSTGRES_HOST", "localhost"),
-            port=os.getenv("POSTGRES_PORT", "5432")
+            dbname=os.getenv("POSTGRES_DB"),
+            user=os.getenv("POSTGRES_USER"),
+            password=os.getenv("POSTGRES_PASSWORD"),
+            host=os.getenv("POSTGRES_HOST"),
+            port=os.getenv("POSTGRES_PORT")
         )
         return conn
     except psycopg2.Error as e:
