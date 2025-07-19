@@ -340,3 +340,18 @@ pip install -r requirements.txt
 python scrape_and_insert.py # Scrape outlet data and insert into PostGIS
 python rag.py # Generate embeddings and insert into Qdrant
 ``` 
+
+8. Allow inbound raffic in security group
+    - Go to EC2 instance in the AWS Console.
+    - Click on the Security Group attached to the instance.
+    - Edit Inbound Rules and add.
+        - Type: Custom TCP
+        - Port Range: `3000`, `8000`
+        - Source: `0.0.0.0/0` (to allow public access)
+
+9. Access the App
+
+Use EC2 Public IPv4 address in the browser.
+```
+http://<your-ec2-public-ip>:3000
+```
