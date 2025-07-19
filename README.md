@@ -221,26 +221,93 @@ Here is the UI for interacting with the McDonald's chatbot, where can ask questi
 ![alt text](images/chat.png)
 
 ### AWS EC2 Deployment
-1. Clone the repository
+For deployment, will be using an AWS EC2 instance in the Singapore region, running Ubuntu 22.04. The instance is configured as a `t2.large` with 30 GiB of storage to provide sufficient space for Docker containers running FastAPI, Qdrant, and PostGIS services. The cloud resources will be connected by using Visual Studio Code via SSH, authenticated with a `.pem` key.
 
-2. Build and start all service
+1. Download and install Miniconda
 ```
-docker-compose up --build
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+```
+
+2. Update existing package
+```
+sudo apt update
+```
+
+3. Install Docker and Docker Compose
+
+Follow the instructions here: [`install-using-the-repository`](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+
+Set up Docker's apt repository.
+```
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+Install the Docker packages.
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+To run docker without `sudo`
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+Reboot EC2 instance
+```
+sudo reboot
+```
+Test run Docker
+```
+docker run hello-world
+```
+
+4. Clone the repository
+```
+git clone https://github.com/christopher192/mcdonald-kl-discovery-project.git
+```
+
+5. Create `.env` file
+
+Create `.env` file in the project `mcdonald-kl-discovery-project` root, make sure to fill in OpenAI API key.
+```
+OPENAI_API_KEY=open_api_key
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_DOCKER_HOST=localhost
+POSTGRES_DOCKER_PORT=5555
+POSTGRES_DB=postgis
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=admin
+QDRANT_URL=http://qdrant:6333
+QDRANT_DOCKER_URL=http://localhost:6333
+```
+
+6. Build and start all service
+```
+docker compose up --build
 ```
 For detached (background) mode
 ```
-docker-compose up -d --build
+docker compose up -d --build
 ```
-3. Access the application
+Stop all running container
 ```
+docker compose down
+```
+View real-time log
+```
+docker compose logs -f
 ```
 
-4. Stop all running container
-```
-docker-compose down
-```
-
-5. View real-time log
-```
-docker-compose logs -f
-```
+7. 
