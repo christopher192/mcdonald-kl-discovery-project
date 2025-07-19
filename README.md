@@ -232,9 +232,23 @@ bash Miniconda3-latest-Linux-x86_64.sh
 2. Update existing package and install package
 ```
 sudo apt update
+sudo apt install -y unzip wget curl
 
-Might take amount of time to install
-sudo apt install -y chromium-driver chromium-browser
+# Might take amount of time to install
+# sudo apt install -y chromium-driver chromium-browser
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
+google-chrome --version
+
+wget https://storage.googleapis.com/chrome-for-testing-public/138.0.7204.157/linux64/chromedriver-linux64.zip
+
+unzip chromedriver-linux64.zip
+sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
+sudo chmod +x /usr/local/bin/chromedriver
+
+chromedriver --version
 ```
 
 3. Install Docker and Docker Compose
