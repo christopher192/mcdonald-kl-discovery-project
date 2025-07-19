@@ -5,7 +5,8 @@ qdrant-client
 openai
 flask
 flask_cors
-psycopg2
+# psycopg2
+psycopg2-binary
 geopy
 fastapi
 uvicorn

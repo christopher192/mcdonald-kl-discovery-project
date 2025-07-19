@@ -229,9 +229,12 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
-2. Update existing package
+2. Update existing package and install package
 ```
 sudo apt update
+
+Might take amount of time to install
+sudo apt install -y chromium-driver chromium-browser
 ```
 
 3. Install Docker and Docker Compose
@@ -310,4 +313,16 @@ View real-time log
 docker compose logs -f
 ```
 
-7. 
+7. Data Populating
+
+Create Conda environment.
+```
+conda create -n mcdonald-discovery-env python=3.10 -y
+conda activate mcdonald-discovery-env
+```
+Run the following scripts to populate data into `Qdrant` and `PostGIS` (running inside Docker).
+```
+pip install -r requirements.txt
+python scrape_and_insert.py # Scrape outlet data and insert into PostGIS
+python rag.py # Generate embeddings and insert into Qdrant
+``` 
