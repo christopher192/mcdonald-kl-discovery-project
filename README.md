@@ -355,3 +355,8 @@ Use EC2 Public IPv4 address in the browser.
 ```
 http://<your-ec2-public-ip>:3000
 ```
+
+ Please make sure the frontend `.env` file is updated as follows:
+ ```
+ REACT_APP_API_BASE_URL=http://<your-ec2-public-ip>:8000
+ ```
